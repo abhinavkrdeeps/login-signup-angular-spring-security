@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class SignUpRequest {
+
   private Long userId;
   private String providerUserId;
 
