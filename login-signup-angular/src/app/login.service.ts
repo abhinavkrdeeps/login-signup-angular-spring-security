@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { LoginRequest } from './LoginRequest';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { RegisterModel } from './RegisterModel';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class LoginService {
 
   constructor(private httpClient: HttpClient) {}
 
-  login(loginRequest:LoginRequest){
+  login(loginRequest:LoginRequest):Observable<any>{
    return this.httpClient.post<LoginRequest>("http://localhost:9999/api/auth/login",loginRequest).pipe(catchError(this.handleError))
   }
 

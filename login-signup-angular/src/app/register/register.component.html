@@ -1,4 +1,5 @@
-<div class="container">
+<div class="container border border-info">
+  <h3>Register Now</h3>
     <form #userForm = "ngForm">
         
         <div class="form-group">
@@ -18,10 +19,10 @@
 
         <div class="form-group">
             <label>Confirm Password</label>
-            <input type="password" class="form-control" name="matchPassword" [(ngModel)]="newUser.matchPassword">
+            <input type="password" class="form-control" name="matchPassword" >
         </div>
         
-        <button class="btn btn-primary btn-lg" (click)="registerUser()">Submit</button>
+        <button class="btn btn-outline-info btn-block" (click)="registerUser()">Submit</button>
         
     </form>
     </div>
