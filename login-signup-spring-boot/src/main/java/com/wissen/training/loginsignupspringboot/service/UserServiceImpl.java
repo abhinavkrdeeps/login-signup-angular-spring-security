@@ -7,6 +7,8 @@ import com.wissen.training.loginsignupspringboot.models.Role;
 import com.wissen.training.loginsignupspringboot.models.User;
 import com.wissen.training.loginsignupspringboot.repository.RoleRepository;
 import com.wissen.training.loginsignupspringboot.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -26,6 +28,8 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public User registerNewUser(SignUpRequest signUpRequest) throws UserAlreadyExistAuthenticationException {
@@ -51,15 +55,17 @@ public class UserServiceImpl implements UserService{
         Set<Role> roleList = new HashSet<>();
         roleList.add(roleRepository.findByName("ROLE_USER"));
         user.setRoles(roleList);
-        user.setProvider(signUpRequest.getSocialProvider().getProviderType());
-        user.setProviderUserId(signUpRequest.getProviderUserId());
+        user.setProvider("LOCAL");
+        user.setProviderUserId("1");
         return user;
 
     }
 
     @Override
     public User findUserByEmail(String email) {
-        return null;
+        User user = userRepository.findByEmail(email);
+        LOG.info("user by email: "+user);
+        return userRepository.findByEmail(email);
     }
 
     @Override

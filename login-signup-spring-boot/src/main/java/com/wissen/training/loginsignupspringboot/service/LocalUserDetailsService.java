@@ -4,6 +4,8 @@ import com.wissen.training.loginsignupspringboot.dto.LocalUser;
 import com.wissen.training.loginsignupspringboot.exception.ResourceNotFoundException;
 import com.wissen.training.loginsignupspringboot.models.User;
 import com.wissen.training.loginsignupspringboot.utils.GeneralUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,13 +19,18 @@ public class LocalUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
+    private final Logger LOG  = LoggerFactory.getLogger(LocalUserDetailsService.class);
+
+
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userService.findUserByEmail(email);
         if(user==null){
             throw new UsernameNotFoundException("Not Found user with email: "+email);
         }
-        return null;
+        LOG.info("user: "+user);
+        return new LocalUserDetails(user.getId(),user.getDisplay_name(),user.getPassword(),user.getRoles()) ;
     }
 
     @Transactional

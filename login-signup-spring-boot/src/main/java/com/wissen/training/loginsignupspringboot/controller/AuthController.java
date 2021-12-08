@@ -4,6 +4,7 @@ package com.wissen.training.loginsignupspringboot.controller;
 import com.wissen.training.loginsignupspringboot.dto.*;
 import com.wissen.training.loginsignupspringboot.exception.UserAlreadyExistAuthenticationException;
 import com.wissen.training.loginsignupspringboot.jwt.TokenProvider;
+import com.wissen.training.loginsignupspringboot.service.LocalUserDetails;
 import com.wissen.training.loginsignupspringboot.service.UserService;
 import com.wissen.training.loginsignupspringboot.utils.GeneralUtils;
 import org.slf4j.Logger;
@@ -43,7 +44,10 @@ public class AuthController {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication);
-        LocalUser localUser = (LocalUser) authentication.getPrincipal();
+        logger.info("Authentication: "+authentication.getDetails()+" principal: "+authentication.getPrincipal());
+        LocalUserDetails localUser = (LocalUserDetails) authentication.getPrincipal();
+        logger.info("jwt token: "+jwt);
+        logger.info("local user: "+localUser);
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, GeneralUtils.buildUserInfo(localUser)));
 
     }

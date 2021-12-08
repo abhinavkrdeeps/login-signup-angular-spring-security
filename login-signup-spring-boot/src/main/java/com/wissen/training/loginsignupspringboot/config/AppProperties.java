@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 @Component
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "jwt")
 public class AppProperties {
     private final Auth auth = new Auth();
     private final OAuth2 oauth2 = new OAuth2();

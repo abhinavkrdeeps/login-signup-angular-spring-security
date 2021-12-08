@@ -9,7 +9,7 @@ import { LoginRequest } from '../LoginRequest';
 })
 export class LoginComponent implements OnInit {
 
-  public loginRequestModel= new LoginRequest("default","default")
+  public loginRequestModel= new LoginRequest("","")
   constructor(private loginService:LoginService) { }
 
   ngOnInit(): void {
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
 
   login(){
      console.log(this.loginRequestModel)
-     this.loginService.login(this.loginRequestModel).subscribe(data=> this.loginRequestModel=data)
+     this.loginService.login(this.loginRequestModel).subscribe(data=> console.log(data))
   }
 
 }
