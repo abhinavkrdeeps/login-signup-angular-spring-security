@@ -25,15 +25,18 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private LocalUserDetailsService localUserDetailsService;
 
-    private Logger logger = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
+    private final Logger logger = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             String jwtToken = getTokenFromRequest(request);
+            logger.info("jwt token in token auth filter: "+jwtToken);
             if(tokenProvider.validateToken(jwtToken)){
                 Long userId = tokenProvider.getUserIdFromToken(jwtToken);
+                System.out.println(" userID: "+userId);
                 UserDetails userDetails = localUserDetailsService.loadUserById(userId);
+                System.out.println("userDetails: "+userDetails);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

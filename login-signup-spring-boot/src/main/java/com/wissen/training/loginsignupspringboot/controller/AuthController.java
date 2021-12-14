@@ -35,7 +35,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    private Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("/api/auth/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
@@ -49,7 +49,6 @@ public class AuthController {
         logger.info("jwt token: "+jwt);
         logger.info("local user: "+localUser);
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, GeneralUtils.buildUserInfo(localUser)));
-
     }
 
     @PostMapping("/api/auth/signup")

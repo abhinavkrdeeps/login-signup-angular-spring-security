@@ -3,6 +3,6 @@ export class CurrentUser{
         public accessToken:string,
         public userId: string,
         public displayName:string,
-        public roles: string
+        public roles: string[]
     ){}
 }

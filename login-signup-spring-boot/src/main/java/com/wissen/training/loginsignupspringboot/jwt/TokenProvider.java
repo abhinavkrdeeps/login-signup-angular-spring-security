@@ -29,21 +29,22 @@ public class TokenProvider {
         LocalUserDetails userPrincipal = (LocalUserDetails) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
+        Date expiryDate = new Date(now.getTime() + 1000000);
         System.out.println("tokenSecret: "+appProperties.getAuth().getTokenSecret());
         return Jwts.builder().setSubject(Long.toString(userPrincipal.getUserId())).setIssuedAt(new Date()).setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, "A Very Secret Key").compact();
     }
 
     public Long getUserIdFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey("A Very Secret Key").parseClaimsJws(token).getBody();
+        System.out.println("claims: "+claims);
 
         return Long.parseLong(claims.getSubject());
     }
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey("A Very Secret Key").parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
             logger.error("Invalid JWT signature");

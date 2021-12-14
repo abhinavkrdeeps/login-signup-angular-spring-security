@@ -1,5 +1,6 @@
 package com.wissen.training.loginsignupspringboot.config;
 
+import com.wissen.training.loginsignupspringboot.oauth2.CookieOAuth2RequestRepo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,4 +13,6 @@ public class GeneralConfig {
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder(10);
     }
+
+
 }

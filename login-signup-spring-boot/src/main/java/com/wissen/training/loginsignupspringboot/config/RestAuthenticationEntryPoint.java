@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class RestAuthenticationEntryPoint implements org.springframework.security.web.AuthenticationEntryPoint {
-    private Logger LOG = LoggerFactory.getLogger(RestAuthenticationEntryPoint.class);
+    private final Logger LOG = LoggerFactory.getLogger(RestAuthenticationEntryPoint.class);
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         LOG.error("UnAuthorized Error : "+authException.getMessage());

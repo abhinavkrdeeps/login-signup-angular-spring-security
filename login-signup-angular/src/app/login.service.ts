@@ -13,6 +13,7 @@ export class LoginService {
   constructor(private httpClient: HttpClient) {}
 
   login(loginRequest:LoginRequest):Observable<any>{
+    console.log(this.httpClient.post<LoginRequest>("http://localhost:9999/api/auth/login",loginRequest))
    return this.httpClient.post<LoginRequest>("http://localhost:9999/api/auth/login",loginRequest).pipe(catchError(this.handleError))
   }
 
