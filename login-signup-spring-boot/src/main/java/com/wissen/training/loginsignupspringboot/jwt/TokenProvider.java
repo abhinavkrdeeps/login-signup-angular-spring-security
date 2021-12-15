@@ -26,12 +26,13 @@ public class TokenProvider {
     }
 
     public String createToken(Authentication authentication){
-        LocalUserDetails userPrincipal = (LocalUserDetails) authentication.getPrincipal();
+        //authentication
+        LocalUser userPrincipal = (LocalUser) authentication.getPrincipal();
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + 1000000);
         System.out.println("tokenSecret: "+appProperties.getAuth().getTokenSecret());
-        return Jwts.builder().setSubject(Long.toString(userPrincipal.getUserId())).setIssuedAt(new Date()).setExpiration(expiryDate)
+        return Jwts.builder().setSubject(Long.toString(3)).setIssuedAt(new Date()).setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, "A Very Secret Key").compact();
     }
 

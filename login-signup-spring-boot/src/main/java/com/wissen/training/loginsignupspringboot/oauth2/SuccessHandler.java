@@ -2,6 +2,8 @@ package com.wissen.training.loginsignupspringboot.oauth2;
 
 import com.wissen.training.loginsignupspringboot.jwt.TokenProvider;
 import com.wissen.training.loginsignupspringboot.utils.CookieUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private TokenProvider tokenProvider;
     private CookieOAuth2RequestRepo cookieOAuth2RequestRepo;
+    private final Logger LOG = LoggerFactory.getLogger(SuccessHandler.class);
 
     @Autowired
     SuccessHandler(TokenProvider tokenProvider, CookieOAuth2RequestRepo requestRepo){
@@ -48,6 +51,8 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         Optional<String> redirectUri = CookieUtils.getCookieFromName(request,REDIRECT_URI_PARAM_COOKIE_NAME).map(Cookie::getValue);
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         String token = tokenProvider.createToken(authentication);
+        String redirectTargetUri = UriComponentsBuilder.fromUriString(targetUrl).queryParam("token",token).build().toUriString();
+        LOG.info("redirectTargetUri: {}",redirectTargetUri);
         return UriComponentsBuilder.fromUriString(targetUrl).queryParam("token",token).build().toUriString();
     }
 

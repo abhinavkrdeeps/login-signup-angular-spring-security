@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService{
         Set<Role> roleList = new HashSet<>();
         roleList.add(roleRepository.findByName("ROLE_USER"));
         user.setRoles(roleList);
-        user.setProvider("LOCAL");
+        user.setProvider(signUpRequest.getSocialProvider().getProviderType());
         user.setProviderUserId("1");
         return user;
 
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService{
     public LocalUser processUserRegistration(String registrationId, Map<String, Object> attributes, OidcIdToken idToken, OidcUserInfo userInfo) throws UserAlreadyExistAuthenticationException, OAuth2AuthenticationProcessingException {
         System.out.println("registrationId :"+registrationId+" attributes: "+attributes);
         System.out.println("OidcToken: "+idToken+" userinfo: "+userInfo);
-        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(registrationId, attributes);
+        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(registrationId, userInfo.getClaims());
         System.out.println("OAuth2UserInfo Name: "+oAuth2UserInfo.getName() +" OAuth2UserInfo email: "+oAuth2UserInfo.getEmail());
         if (StringUtils.isEmpty(oAuth2UserInfo.getName())) {
             throw new OAuth2AuthenticationProcessingException("Name not found from OAuth2 provider");
@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService{
         SignUpRequest userDetails = toUserRegistrationObject(registrationId, oAuth2UserInfo);
         System.out.println("userDetails: "+userDetails);
         User user = findUserByEmail(oAuth2UserInfo.getEmail());
+        System.out.println("Found User: "+user);
         if (user != null) {
             if (!user.getProvider().equals(registrationId) && !user.getProvider().equals(SocialProvider.LOCAL.getProviderType())) {
                 throw new OAuth2AuthenticationProcessingException(

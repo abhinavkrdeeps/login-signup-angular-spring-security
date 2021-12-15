@@ -41,4 +41,20 @@ public class User implements Serializable {
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", providerUserId='" + providerUserId + '\'' +
+                ", email='" + email + '\'' +
+                ", enabled=" + enabled +
+                ", display_name='" + display_name + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", password='" + password + '\'' +
+                ", provider='" + provider + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }
