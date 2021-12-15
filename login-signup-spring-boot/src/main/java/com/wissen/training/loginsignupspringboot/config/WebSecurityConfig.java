@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/","/api/all","/api/auth/**","/api/oauth/**").permitAll()
+                .antMatchers("/","/api/all","/api/auth/**","/oauth2/**").permitAll()
                 .anyRequest().authenticated().
                 and().
                 oauth2Login().
@@ -102,6 +102,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
         DefaultAuthorizationCodeTokenResponseClient tokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
         tokenResponseClient.setRestOperations(restTemplate);
+        System.out.println(tokenResponseClient);
         return tokenResponseClient;
     }
 
